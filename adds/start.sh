@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 OPTION="${1}"
 
 if [ ! -z "${ROOTPATH}" ]; then
@@ -29,8 +30,11 @@ generate_synapse_file() {
 }
 
 configure_homeserver_yaml() {
+
 	local turnkey="${1}"
 	local filepath="${2}"
+
+	local ymltemp="$(mktemp)"	
 
 	awk -v TURNURIES="turn_uris: [\"turn:${SERVER_NAME}:3478?transport=udp\", \"turn:${SERVER_NAME}:3478?transport=tcp\"]" \
 	    -v TURNSHAREDSECRET="turn_shared_secret: \"${turnkey}\"" \
@@ -45,21 +49,24 @@ configure_homeserver_yaml() {
 		sub(/database: "\/homeserver.db"/, DATABASE);
 		sub(/log_file: "\/homeserver.log"/, LOGFILE);
 		sub(/media_store_path: "\/media_store"/, MEDIASTORE);
+		sub("enable_registration: False", "enable_registration: True");  
 		print;
-	    }' "${filepath}" > /data/homeserver.yaml
+	    }' "${filepath}" > "${ymltemp}"
+
+	mv ${ymltemp} "${filepath}"
 }
 
 case $OPTION in
 	"start")
 		if [ -f /data/turnserver.conf ]; then
 			echo "-=> start turn"
-			/usr/local/bin/turnserver --daemon -c /data/turnserver.conf
+			/usr/bin/turnserver --daemon -c /data/turnserver.conf
 		fi
 
-		echo "-=> start vector.im client"
+		echo "-=> start riot.im client"
 		(
-			if [ -f /data/vector.im.conf ]; then
-				echo "The vector  web client is now handled via silvio/docker-matrix-vector"
+			if [ -f /data/vector.im.conf ] || [ -f /data/riot.im.conf ] ; then
+				echo "The riot web client is now handled via silvio/matrix-riot-docker"
 			fi
 		)
 
@@ -119,4 +126,3 @@ case $OPTION in
 		echo "-=> unknown \'$OPTION\'"
 		;;
 esac
-
