@@ -6,7 +6,7 @@ MAINTAINER Nicolas Dumont
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Git branch to build from
-ENV BV_SYN=0.20.0
+ENV BV_SYN=0.21.0
 ENV BV_TUR=master
 # https://github.com/python-pillow/Pillow/issues/1763
 ENV LIBRARY_PATH=/lib:/usr/lib
