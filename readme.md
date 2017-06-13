@@ -21,14 +21,14 @@ To get the things done, "generate" will create a own self-signed certificate.
 
 Example:
 
-    $ docker run -v /tmp/data:/data --rm -e SERVER_NAME=localhost nic0d/docker-matrix generate
+    $ docker run -v /tmp/data:/data --rm -e SERVER_NAME=localhost -e REPORT_STATS=no nic0d/docker-matrix generate
 
 # Start
 
 For starting you need the port bindings and a mapping for the
 `/data`-directory.
 
-    $ docker run -d -p 8008:8008 -p 8448:8448 -p 3478:3478 -e REPORT_STATS=no -v /tmp/data:/data nic0d/docker-matrix start
+    $ docker run -d -p 8008:8008 -p 8448:8448 -p 3478:3478 -v /tmp/data:/data nic0d/docker-matrix start
 
 # Port configurations
 
