@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-IMAGE_NAME=cloud-projects/docker-matrix
+IMAGE_NAME=nic0d/docker-matrix
 
 echo "Building Docker image $IMAGE_NAME"
 
